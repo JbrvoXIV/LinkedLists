@@ -1,5 +1,4 @@
 
-import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 public class SinglyLinkedList {
@@ -13,7 +12,7 @@ public class SinglyLinkedList {
         }
     }
 
-    class LinkedListIterator implements ListIterator<Object> {
+    class LinkedListIterator {
         private Node position;
         private Node previous;
         private boolean isAfterNext;
@@ -45,6 +44,39 @@ public class SinglyLinkedList {
                 return head != null;
             }
             return position.next != null;
+        }
+
+        public void remove() {
+            if(!isAfterNext) {
+                throw new IllegalStateException();
+            }
+            if(position == head) {
+                removeHead();
+            } else {
+                previous.next = position.next;
+            }
+            position = previous;
+            isAfterNext = false;
+        }
+
+        public void add(Object element) {
+            if(position == null) {
+                prepend(element);
+                position = head;
+            } else {
+                Node newNode = new Node(element);
+                newNode.next = position.next;
+                position.next = newNode;
+                position = newNode;
+            }
+            isAfterNext = false;            
+        }
+
+        public void set(Object element) {
+            if(!isAfterNext) {
+                throw new IllegalStateException();
+            }
+            position.data = element;
         }
     } 
 
